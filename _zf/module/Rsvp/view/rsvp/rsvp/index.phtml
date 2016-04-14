@@ -1,0 +1,30 @@
+ <?php
+ // module/Rsvp/view/rsvp/rsvp/index.phtml:
+
+ $title = 'My rsvps';
+ $this->headTitle($title);
+ ?>
+ <h1><?php echo $this->escapeHtml($title); ?></h1>
+ <p>
+     <a href="<?php echo $this->url('rsvp', array('action'=>'add'));?>">Add new rsvp</a>
+ </p>
+
+ <table class="table">
+ <tr>
+     <th>Title</th>
+     <th>Artist</th>
+     <th>&nbsp;</th>
+ </tr>
+ <?php foreach ($rsvps as $rsvp) : ?>
+ <tr>
+     <td><?php echo $this->escapeHtml($rsvp->title);?></td>
+     <td><?php echo $this->escapeHtml($rsvp->artist);?></td>
+     <td>
+         <a href="<?php echo $this->url('rsvp',
+             array('action'=>'edit', 'id' => $rsvp->id));?>">Edit</a>
+         <a href="<?php echo $this->url('rsvp',
+             array('action'=>'delete', 'id' => $rsvp->id));?>">Delete</a>
+     </td>
+ </tr>
+ <?php endforeach; ?>
+ </table>
