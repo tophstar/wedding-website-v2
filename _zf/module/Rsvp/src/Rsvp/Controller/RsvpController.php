@@ -397,4 +397,212 @@
 
         return new JsonModel($result);
     }
+
+    public function attendingReceptionAction() {
+
+        $request = $this->getRequest();
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        if(!isset($data->email) || empty($data->email) || !isset($data->attendingReception)){
+            $result = array('status' => 'error', 'message' => 'Missing Email or Attending Reception flag');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+
+        $this->updateRsvp($data, 'attendingReception');
+
+        $result['status'] = 'success';
+        $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
+
+    public function registerAdultsReceptionAction() {
+
+        $request = $this->getRequest();
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        if(!isset($data->email) || empty($data->email) || !isset($data->adultsReception)){
+            $result = array('status' => 'error', 'message' => 'Missing Email or Adult Reception count');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+
+        $this->updateRsvp($data, 'adultsReception');
+
+        $result['status'] = 'success';
+        $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
+
+
+    public function registerChildrenReceptionAction() {
+
+        $updateParam = 'childrenReception';
+
+        $request = $this->getRequest();
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        if(!isset($data->email) || empty($data->email) || !isset($data->$updateParam)){
+            $result = array('status' => 'error', 'message' => 'Missing Email or Children Reception count');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+
+        $this->updateRsvp($data, $updateParam);
+
+        $result['status'] = 'success';
+        $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
+
+    public function registerVegiterianCountAction() {
+
+        $updateParam = 'vegiterianCount';
+
+        $request = $this->getRequest();
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        if(!isset($data->email) || empty($data->email) || !isset($data->$updateParam)){
+            $result = array('status' => 'error', 'message' => 'Missing Email or Children Reception count');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+
+        $this->updateRsvp($data, $updateParam);
+
+
+
+
+
+        //@todo update the isComplete as well...
+        $this->updateRsvp($data, 'rsvpComplete');
+
+
+
+
+
+
+        $result['status'] = 'success';
+        $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
+
+    public function rsvpCommentAction() {
+
+        $updateParam = 'rsvpComments';
+
+        $request = $this->getRequest();
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        if(!isset($data->email) || empty($data->email) || !isset($data->$updateParam)){
+            $result = array('status' => 'error', 'message' => 'Missing Email or RSVP comment');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+        $this->updateRsvp($data, $updateParam);
+
+        $result['status'] = 'success';
+        $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
  }

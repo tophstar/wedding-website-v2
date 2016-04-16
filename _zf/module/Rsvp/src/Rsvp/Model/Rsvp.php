@@ -16,7 +16,7 @@
 	public $childrenReception;
 	public $vegiterianCount;
 	public $rsvpComplete;
-
+	public $rsvpComments;
 
 
      public function exchangeArray($data)
@@ -32,6 +32,6 @@
 		$this->childrenReception  = (!empty($data['children_reception_count'])) ? $data['children_reception_count'] : null;
 		$this->vegiterianCount  = (!empty($data['vegiterian_count'])) ? $data['vegiterian_count'] : null;
 		$this->rsvpComplete = (!empty($data['rsvp_complete'])) ? $data['rsvp_complete'] : null;
-
+		$this->rsvpComments = (!empty($data['rsvp_comments'])) ? $data['rsvp_comments'] : null;
      }
  }

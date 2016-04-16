@@ -59,7 +59,7 @@ var terminalHarness = (function () {
             // Need to cache bust..
             require.config({
                 paths: {
-                    "terminal": "/js/terminal/terminal"//?cachebust=" + (new Date()).getTime()
+                    "terminal": "_zf/public/js/terminal/terminal"//?cachebust=" + (new Date()).getTime()
                 }
             });
 

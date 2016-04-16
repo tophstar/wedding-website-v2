@@ -56,7 +56,8 @@ namespace Rsvp\Model;
              'adults_reception_count' => $rsvp->adultsReception,
              'children_reception_count' => $rsvp->childrenReception,
              'vegiterian_count' => $rsvp->vegiterianCount,
-             'rsvp_complete' => $rsvp->rsvpComplete
+             'rsvp_complete' => $rsvp->rsvpComplete,
+             'rsvp_comments' => $rsvp->rsvpComments
          );
 
          $id = (int) $rsvp->idrsvp;
