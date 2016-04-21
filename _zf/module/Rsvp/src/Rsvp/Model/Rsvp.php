@@ -34,4 +34,20 @@
 		$this->rsvpComplete = (!empty($data['rsvp_complete'])) ? $data['rsvp_complete'] : null;
 		$this->rsvpComments = (!empty($data['rsvp_comments'])) ? $data['rsvp_comments'] : null;
      }
+
+     public function exchangeObject($data)
+     {
+        $this->idrsvp     = (!empty($data['idrsvp'])) ? $data['idrsvp'] : 0;
+		$this->email  = (!empty($data['email'])) ? $data['email'] : null;
+		$this->name  = (!empty($data['name'])) ? $data['name'] : null;
+		$this->attendingCeremony  = (!empty($data['attendingCeremony'])) ? $data['attendingCeremony'] : null;
+		$this->adultsCeremony  = (!empty($data['adultsCeremony'])) ? $data['adultsCeremony'] : null;
+		$this->childrenCeremony  = (!empty($data['childrenCeremony'])) ? $data['childrenCeremony'] : null;
+		$this->attendingReception  = (!empty($data['attendingReception'])) ? $data['attendingReception'] : null;
+		$this->adultsReception  = (!empty($data['adultsReception'])) ? $data['adultsReception'] : null;
+		$this->childrenReception  = (!empty($data['childrenReception'])) ? $data['childrenReception'] : null;
+		$this->vegiterianCount  = (!empty($data['vegiterianCount'])) ? $data['vegiterianCount'] : null;
+		$this->rsvpComplete = (!empty($data['rsvpComplete'])) ? $data['rsvpComplete'] : null;
+		$this->rsvpComments = (!empty($data['rsvpComments'])) ? $data['rsvpComments'] : null;
+     }
  }

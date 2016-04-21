@@ -25,7 +25,7 @@
 
 
 
-                //@TODO Verify ttl is still valid
+        //@TODO Verify ttl is still valid
 
 
 
@@ -57,17 +57,30 @@
 
 
 
-     protected function updateRsvp($data, $updateParam){
+     protected function updateRsvpField($data, $updateParam){
         $rsvp = $this->getRsvpTable()->fetchByEmail($data->email);
         $rsvp->$updateParam = $data->$updateParam;
-
-        $dataArray = json_decode(json_encode($rsvp), True);
 
         $this->getRsvpTable()->saveRsvp($rsvp);
      }
 
 
+     protected function updateRsvp($data){
+        $rsvp = $this->getRsvpTable()->fetchByEmail($data->oldEmail);
 
+        $dataArray = json_decode(json_encode($data), True);
+        $dataArray['idrsvp'] = $rsvp->idrsvp;
+        $rsvp->exchangeObject($dataArray);
+        $this->getRsvpTable()->saveRsvp($rsvp);
+     }
+
+     protected function getRsvp($email){
+        $rsvp = $this->getRsvpTable()->fetchByEmail($email);
+
+        $dataArray = json_decode(json_encode($rsvp), True);
+
+        return $dataArray;
+     }
 
 
 
@@ -272,7 +285,7 @@
         }
 
 
-        $this->updateRsvp($data, 'name');
+        $this->updateRsvpField($data, 'name');
 
 
         $result['status'] = 'success';
@@ -311,7 +324,7 @@
         }
 
 
-        $this->updateRsvp($data, 'attendingCeremony');
+        $this->updateRsvpField($data, 'attendingCeremony');
 
         $result['status'] = 'success';
         $result['message'] = '';
@@ -349,7 +362,7 @@
         }
 
 
-        $this->updateRsvp($data, 'adultsCeremony');
+        $this->updateRsvpField($data, 'adultsCeremony');
 
         $result['status'] = 'success';
         $result['message'] = '';
@@ -388,7 +401,7 @@
         }
 
 
-        $this->updateRsvp($data, 'childrenCeremony');
+        $this->updateRsvpField($data, 'childrenCeremony');
 
         $result['status'] = 'success';
         $result['message'] = '';
@@ -426,7 +439,7 @@
         }
 
 
-        $this->updateRsvp($data, 'attendingReception');
+        $this->updateRsvpField($data, 'attendingReception');
 
         $result['status'] = 'success';
         $result['message'] = '';
@@ -464,7 +477,7 @@
         }
 
 
-        $this->updateRsvp($data, 'adultsReception');
+        $this->updateRsvpField($data, 'adultsReception');
 
         $result['status'] = 'success';
         $result['message'] = '';
@@ -505,7 +518,7 @@
         }
 
 
-        $this->updateRsvp($data, $updateParam);
+        $this->updateRsvpField($data, $updateParam);
 
         $result['status'] = 'success';
         $result['message'] = '';
@@ -545,14 +558,14 @@
         }
 
 
-        $this->updateRsvp($data, $updateParam);
+        $this->updateRsvpField($data, $updateParam);
 
 
 
 
 
         //@todo update the isComplete as well...
-        $this->updateRsvp($data, 'rsvpComplete');
+        $this->updateRsvpField($data, 'rsvpComplete');
 
 
 
@@ -596,10 +609,87 @@
             return new JsonModel($result);
         }
 
-        $this->updateRsvp($data, $updateParam);
+        $this->updateRsvpField($data, $updateParam);
 
         $result['status'] = 'success';
         $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
+
+
+
+    public function rsvpEditAction() {
+
+        $request = $this->getRequest();
+
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        $data = $data->data;
+
+        if(!isset($data->email) || empty($data->email) ){//|| !isset($data->$updateParam)){
+            $result = array('status' => 'error', 'message' => 'Missing Email or RSVP comment');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+        $this->updateRsvp($data);
+
+        $result['status'] = 'success';
+        $result['message'] = '';
+
+
+
+        return new JsonModel($result);
+    }
+
+    public function getRsvpAction() {
+
+        $request = $this->getRequest();
+
+
+        $result = array('status' => 'error', 'message' => 'There was some error. Try again.', 'isXmlHTTP' => $request->isXmlHttpRequest());
+
+
+
+        if(!$this->validateRSVPRequest($request)){
+            $result = array('status' => 'error', 'message' => 'Was not an isXmlHttpRequest');
+            return new JsonModel($result);
+        }
+
+
+
+        $data = \Zend\Json\Json::decode($request->getContent());
+
+        if(!isset($data->email) || empty($data->email) ){
+            $result = array('status' => 'error', 'message' => 'Missing Email or RSVP comment');
+            return new JsonModel($result);
+        }
+
+        if(!$this->validateAccessToken($data)){
+            $result = array('status' => 'error', 'message' => 'Token not valid.');
+            return new JsonModel($result);
+        }
+
+        $result = $this->getRsvp($data->email);
 
 
 
