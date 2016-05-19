@@ -611,6 +611,8 @@
 
         $this->updateRsvpField($data, $updateParam);
 
+        $this->updateRsvpField($data, 'rsvpComplete');
+
         $result['status'] = 'success';
         $result['message'] = '';
 
